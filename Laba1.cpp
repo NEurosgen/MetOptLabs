@@ -29,7 +29,7 @@ struct SimplexResult {
 
 // Преобразование задачи в каноническую форму
 auto CanonForm() {
-    vector<double> original_obj = { -2, -3, 1, -4, -1 };
+    vector<double> original_obj = { 2,3, -1, 4, 1 };
     vector<bool> is_free = { false, false, false, false, true };
     vector<Constraint> original_constraints = {
         {{1, 1, 1, 0, 0}, 10, '='},
@@ -127,7 +127,20 @@ void Pivot(vector<vector<double>>& T, int m, int n, int enter, int leave) {
 
 SimplexResult SimplexMethod(vector<vector<double>> T, int m, int n) {
     const double eps = 1e-9;
+    int iteration = 0;
     while (true) {
+#ifdef PRINT
+        cout << "Iteration " << ++iteration << ":\n";
+        for (const auto& row : T) {
+            for (double val : row) {
+                cout << val << " \t";
+            }
+            cout << endl;
+        }
+        cout << endl;
+
+#endif
+
         int enter = -1;
         for (int j = 0; j < n; j++) {
             if (T[m][j] < -eps) {
