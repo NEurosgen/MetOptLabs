@@ -28,7 +28,7 @@ struct SimplexResult {
     bool infeasible;
 };
 
-// Выполняет шаг симплекс-метода, преобразуя таблицу
+// Г‚Г»ГЇГ®Г«Г­ГїГҐГІ ГёГ ГЈ Г±ГЁГ¬ГЇГ«ГҐГЄГ±-Г¬ГҐГІГ®Г¤Г , ГЇГ°ГҐГ®ГЎГ°Г Г§ГіГї ГІГ ГЎГ«ГЁГ¶Гі
 void Pivot(vector<vector<double>>& T, int m, int n, int enter, int leave) {
     double pivot = T[leave][enter];
     for (int j = 0; j <= n; j++) {
@@ -44,7 +44,7 @@ void Pivot(vector<vector<double>>& T, int m, int n, int enter, int leave) {
     }
 }
 
-// Реализует симплекс-метод для поиска оптимального решения
+// ГђГҐГ Г«ГЁГ§ГіГҐГІ Г±ГЁГ¬ГЇГ«ГҐГЄГ±-Г¬ГҐГІГ®Г¤ Г¤Г«Гї ГЇГ®ГЁГ±ГЄГ  Г®ГЇГІГЁГ¬Г Г«ГјГ­Г®ГЈГ® Г°ГҐГёГҐГ­ГЁГї
 SimplexResult SimplexMethod(vector<vector<double>> T, int m, int n) {
     const double eps = 1e-9;
     int iteration = 0;
@@ -60,7 +60,7 @@ SimplexResult SimplexMethod(vector<vector<double>> T, int m, int n) {
 
         int enter = -1;
         for (int j = 0; j < n; j++) {
-            if (T[m][j] < -eps) {  // Для максимизации ищем отрицательный коэффициент
+            if (T[m][j] < -eps) {  // Г„Г«Гї Г¬Г ГЄГ±ГЁГ¬ГЁГ§Г Г¶ГЁГЁ ГЁГ№ГҐГ¬ Г®ГІГ°ГЁГ¶Г ГІГҐГ«ГјГ­Г»Г© ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІ
                 enter = j;
                 break;
             }
@@ -104,11 +104,11 @@ SimplexResult SimplexMethod(vector<vector<double>> T, int m, int n) {
             solution[j] = T[basic_row][n];
         }
     }
-    double optimal = -T[m][n]; // Для максимизации меняем знак
+    double optimal = -T[m][n]; // Г„Г«Гї Г¬Г ГЄГ±ГЁГ¬ГЁГ§Г Г¶ГЁГЁ Г¬ГҐГ­ГїГҐГ¬ Г§Г­Г ГЄ
     return { solution, optimal, false, false };
 }
 
-// Преобразует задачу в двойственную форму и выводит её
+// ГЏГ°ГҐГ®ГЎГ°Г Г§ГіГҐГІ Г§Г Г¤Г Г·Гі Гў Г¤ГўГ®Г©Г±ГІГўГҐГ­Г­ГіГѕ ГґГ®Г°Г¬Гі ГЁ ГўГ»ГўГ®Г¤ГЁГІ ГҐВё
 void DualForm(const vector<double>& obj, const vector<Constraint>& constraints) {
     int m = constraints.size();
     int n = obj.size();
@@ -116,22 +116,22 @@ void DualForm(const vector<double>& obj, const vector<Constraint>& constraints) 
     vector<double> dual_obj(m);
     vector<DualConstraint> dual_constraints(n);
 
-    // Формирование целевой функции двойственной задачи
+    // Г”Г®Г°Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ Г¶ГҐГ«ГҐГўГ®Г© ГґГіГ­ГЄГ¶ГЁГЁ Г¤ГўГ®Г©Г±ГІГўГҐГ­Г­Г®Г© Г§Г Г¤Г Г·ГЁ
     for (int i = 0; i < m; ++i) {
         dual_obj[i] = constraints[i].rhs;
     }
 
-    // Формирование ограничений двойственной задачи
+    // Г”Г®Г°Г¬ГЁГ°Г®ГўГ Г­ГЁГҐ Г®ГЈГ°Г Г­ГЁГ·ГҐГ­ГЁГ© Г¤ГўГ®Г©Г±ГІГўГҐГ­Г­Г®Г© Г§Г Г¤Г Г·ГЁ
     for (int j = 0; j < n; ++j) {
         dual_constraints[j].coefficients.resize(m);
         for (int i = 0; i < m; ++i) {
             dual_constraints[j].coefficients[i] = constraints[i].coefficients[j];
         }
         dual_constraints[j].rhs = obj[j];
-        dual_constraints[j].type = '>';  // Ограничение двойственной задачи становится >=
+        dual_constraints[j].type = '>';  // ГЋГЈГ°Г Г­ГЁГ·ГҐГ­ГЁГҐ Г¤ГўГ®Г©Г±ГІГўГҐГ­Г­Г®Г© Г§Г Г¤Г Г·ГЁ Г±ГІГ Г­Г®ГўГЁГІГ±Гї >=
     }
 
-    // Вывод двойственной задачи
+    // Г‚Г»ГўГ®Г¤ Г¤ГўГ®Г©Г±ГІГўГҐГ­Г­Г®Г© Г§Г Г¤Г Г·ГЁ
     cout << "Dual Form:\n";
     cout << "Minimize W = ";
     for (int i = 0; i < m; ++i) {
@@ -148,7 +148,7 @@ void DualForm(const vector<double>& obj, const vector<Constraint>& constraints) 
     }
     cout << "\nAll variables y >= 0\n";
 
-    // Создание симплекс-таблицы для двойственной задачи
+    // Г‘Г®Г§Г¤Г Г­ГЁГҐ Г±ГЁГ¬ГЇГ«ГҐГЄГ±-ГІГ ГЎГ«ГЁГ¶Г» Г¤Г«Гї Г¤ГўГ®Г©Г±ГІГўГҐГ­Г­Г®Г© Г§Г Г¤Г Г·ГЁ
     vector<vector<double>> T(m + 1, vector<double>(n + 1, 0.0));
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -157,10 +157,10 @@ void DualForm(const vector<double>& obj, const vector<Constraint>& constraints) 
         T[i][n] = dual_obj[i];
     }
     for (int j = 0; j < n; j++) {
-        T[m][j] = -obj[j];  // Для максимизации знак меняется
+        T[m][j] = -obj[j];  // Г„Г«Гї Г¬Г ГЄГ±ГЁГ¬ГЁГ§Г Г¶ГЁГЁ Г§Г­Г ГЄ Г¬ГҐГ­ГїГҐГІГ±Гї
     }
 
-    // Запуск симплекс-метода
+    // Г‡Г ГЇГіГ±ГЄ Г±ГЁГ¬ГЇГ«ГҐГЄГ±-Г¬ГҐГІГ®Г¤Г 
     SimplexResult result = SimplexMethod(T, m, n);
     if (result.unbounded) {
         cout << "The dual problem is unbounded." << endl;
